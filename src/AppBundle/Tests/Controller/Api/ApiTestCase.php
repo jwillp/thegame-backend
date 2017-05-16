@@ -103,7 +103,7 @@ abstract class ApiTestCase extends KernelTestCase
 
     protected function getBaseURI() {
         $uri = '/web/app_test.php';
-        if(!getenv('TRAVIS')) {
+        if(getenv('TRAVIS') == 'true') {
             $uri = '/thegame-backend' . $uri;
         }
         return $uri;
