@@ -2,6 +2,10 @@ language: php
 php:
     - 7
 
+addons:
+  hosts:
+    - localhost
+
 before_script:
   - cp app/config/parameters.yml.travis app/config/parameters.yml
   - composer install
