@@ -20,7 +20,7 @@ class UserControllerTest extends ApiTestCase
         );
 
         // Create game response
-        $response = $this->client->post('/thegame/web/app_test.php/api/users/register', 
+        $response = $this->client->post($this->getBaseURI() . '/api/users/register', 
             [
                 'body' => json_encode($data)
             ]
@@ -39,7 +39,7 @@ class UserControllerTest extends ApiTestCase
         );
 
         // Create game response
-        $response = $this->client->post('/thegame/web/app_test.php/api/users/register', 
+        $response = $this->client->post($this->getBaseURI() . '/api/users/register', 
             [
                 'body' => json_encode($data),
                 'http_errors' => false
@@ -62,7 +62,7 @@ class UserControllerTest extends ApiTestCase
 
     // test_method testLoginAction "src/AppBundle/Tests/Controller/Api/UserControllerTest"
     public function testLoginAction() {
-        $response = $this->client->post('/thegame/web/app_test.php/api/users/login', 
+        $response = $this->client->post($this->getBaseURI() . '/api/users/login', 
             [
             'auth' => ['joe', 'pass']
             ]
@@ -77,7 +77,7 @@ class UserControllerTest extends ApiTestCase
 
     // test_method testBadToken "src/AppBundle/Tests/Controller/Api/
     public function testBadToken() {
-        $response = $this->client->post('/thegame/web/app_test.php/api/users/login', 
+        $response = $this->client->post($this->getBaseURI() . '/api/users/login', 
             [
             'body' => '[]',
             'headers' => [

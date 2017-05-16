@@ -13,7 +13,7 @@ class TokenContollerTest extends ApiTestCase
 {
     // test_method testCreateTokenAction "src/AppBundle/Tests/Controller/Api/TokenContollerTest"
     public function testCreateTokenAction() {
-        $response = $this->client->post('/thegame/web/app_test.php/api/tokens/', 
+        $response = $this->client->post($this->getBaseURI() . '/api/tokens/', 
             [
             'auth' => ['joe', 'pass']
             ]
@@ -29,7 +29,7 @@ class TokenContollerTest extends ApiTestCase
     // test_method testCreateTokenActionValidation "src/AppBundle/Tests/Controller/Api/TokenContollerTest"
     public function testCreateTokenActionValidation() {
         // Try with wrong password
-        $response = $this->client->post('/thegame/web/app_test.php/api/tokens/', 
+        $response = $this->client->post($this->getBaseURI() . '/api/tokens/', 
             [
             'auth' => ['joe', 'wrong_pass'],
             'http_errors' => false

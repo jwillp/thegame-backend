@@ -21,7 +21,7 @@ class GameControllerTest extends ApiTestCase
         );
 
         // Create game response
-        $response = $this->client->post('/thegame/web/app_test.php/api/games/new', [
+        $response = $this->client->post($this->getBaseURI() . '/api/games/new', [
             'body' => json_encode($data),
             'headers' => $this->getAuthorizedHeaders('joe')
         ]);
@@ -47,7 +47,7 @@ class GameControllerTest extends ApiTestCase
         );
 
         // Create game response
-        $response = $this->client->post('/thegame/web/app_test.php/api/games/new', [
+        $response = $this->client->post($this->getBaseURI() . '/api/games/new', [
             'body' => json_encode($data),
             'headers' => $this->getAuthorizedHeaders('joe')
         ]);
@@ -78,7 +78,7 @@ class GameControllerTest extends ApiTestCase
         );
 
         // Create game response
-        $response = $this->client->post('/thegame/web/app_test.php/api/games/new', [
+        $response = $this->client->post($this->getBaseURI() . '/api/games/new', [
             'body' => json_encode($data),
             'headers' => $this->getAuthorizedHeaders('joe')
         ]);
@@ -93,7 +93,7 @@ class GameControllerTest extends ApiTestCase
             'end_date' => '2017/05/30 23:59',
         );
 
-        $response = $this->client->post('/thegame/web/app_test.php/api/games/new', [
+        $response = $this->client->post($this->getBaseURI() . '/api/games/new', [
             'body' => json_encode($data),
             'headers' => $this->getAuthorizedHeaders('joe'),
             'http_errors' => false
@@ -122,7 +122,7 @@ class GameControllerTest extends ApiTestCase
         );
 
         // Create game response
-        $response = $this->client->post('/thegame/web/app_test.php/api/games/new', [
+        $response = $this->client->post($this->getBaseURI() . '/api/games/new', [
             'body' => json_encode($data),
             'headers' => $this->getAuthorizedHeaders('joe')
         ]);
@@ -130,7 +130,7 @@ class GameControllerTest extends ApiTestCase
         $finishedData = json_decode($response->getBody(true), true);
         $id = $finishedData['id'];
         $response = $this->client->get(
-            '/thegame/web/app_test.php/api/games/' . $id,
+            $this->getBaseURI() . '/api/games/' . $id,
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
@@ -141,7 +141,7 @@ class GameControllerTest extends ApiTestCase
     // test_method testShowActionValidation "src/AppBundle/Tests/Controller/Api/GameControllerTest"
     public function testShowActionValidation() {
         // Id not existing
-        $response = $this->client->get('/thegame/web/app_test.php/api/games/-1',[
+        $response = $this->client->get($this->getBaseURI() . '/api/games/-1',[
             'http_errors' => false,
             'headers' => $this->getAuthorizedHeaders('joe')
         ]);
@@ -161,14 +161,14 @@ class GameControllerTest extends ApiTestCase
                 'end_date' => '2017/05/30 23:59',
             );
 
-            $this->client->post('/thegame/web/app_test.php/api/games/new', [
+            $this->client->post($this->getBaseURI() . '/api/games/new', [
                 'body' => json_encode($data),
                 'http_errors' => false,
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]);
         }
 
-        $response = $this->client->get('/thegame/web/app_test.php/api/games', [
+        $response = $this->client->get($this->getBaseURI() . '/api/games', [
             'headers' => $this->getAuthorizedHeaders('joe')
         ]);
         $finishedData = json_decode($response->getBody(true), true);
@@ -246,7 +246,7 @@ class GameControllerTest extends ApiTestCase
             'end_date' => '2017/05/30 23:59',
         );
 
-        $response = $this->client->post('/thegame/web/app_test.php/api/games/new', [
+        $response = $this->client->post($this->getBaseURI() . '/api/games/new', [
             'body' => json_encode($data),
             'headers' => $this->getAuthorizedHeaders('joe')
         ]);
@@ -256,7 +256,7 @@ class GameControllerTest extends ApiTestCase
         // Update resource
         $data['title'] = 'Updated Title';
         $id = $data['id'];
-        $response = $this->client->put('/thegame/web/app_test.php/api/games/'. $id, [
+        $response = $this->client->put($this->getBaseURI() . '/api/games/'. $id, [
             'body' => json_encode($data),
             'headers' => $this->getAuthorizedHeaders('joe')
         ]);
@@ -275,7 +275,7 @@ class GameControllerTest extends ApiTestCase
             "end_date": "2017/05/30 23:59"
         }';
 
-        $response = $this->client->post('/thegame/web/app_test.php/api/games/new', [
+        $response = $this->client->post($this->getBaseURI() . '/api/games/new', [
             'body' => $invalidBody,
             'http_errors' => false,
             'headers' => $this->getAuthorizedHeaders('joe')
@@ -296,7 +296,7 @@ class GameControllerTest extends ApiTestCase
         );
 
         // Create game response
-        $response = $this->client->post('/thegame/web/app_test.php/api/games/new', [
+        $response = $this->client->post($this->getBaseURI() . '/api/games/new', [
             'body' => json_encode($data),
             'headers' => $this->getAuthorizedHeaders('joe')
         ]);
@@ -306,7 +306,7 @@ class GameControllerTest extends ApiTestCase
 
         // Try to delete
         $response = $this->client->delete(
-            '/thegame/web/app_test.php/api/games/' . $id,
+            $this->getBaseURI() . '/api/games/' . $id,
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
@@ -316,7 +316,7 @@ class GameControllerTest extends ApiTestCase
 
         // Verify deleted flag
         $response = $this->client->get(
-            '/thegame/web/app_test.php/api/games/' . $id,
+            $this->getBaseURI() . '/api/games/' . $id,
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
@@ -329,7 +329,7 @@ class GameControllerTest extends ApiTestCase
     public function testRequireAuthentication() {
 
         // No authentication data
-        $response = $this->client->post('/thegame/web/app_test.php/api/games/new', [
+        $response = $this->client->post($this->getBaseURI() . '/api/games/new', [
             'body' => '[]',
             'http_errors' => false,
             //'headers' => $this->getAuthorizedHeaders('joe')
@@ -345,7 +345,7 @@ class GameControllerTest extends ApiTestCase
      */
     private function getEventsResponse() {
         return $this->client->get(
-            '/thegame/web/app_test.php/api/events',
+            $this->getBaseURI() . '/api/events',
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
