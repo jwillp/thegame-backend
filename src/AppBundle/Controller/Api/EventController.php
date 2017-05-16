@@ -30,7 +30,10 @@ class EventController extends ApiController
     public function listAction(Request $request) {
 
         $em = $this->getDoctrine()->getManager();
-        $qb = $em->getRepository('AppBundle:Event')->findAllQueryBuilder();
+
+        $filter = $request->query->get('gameId');
+
+        $qb = $em->getRepository('AppBundle:Event')->findAllQueryBuilder($filter);
 
         $paginatedCollection = $this
             ->get('pagination_factory')

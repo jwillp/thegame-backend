@@ -13,7 +13,13 @@ use Doctrine\ORM\EntityRepository;
 class EventRepository extends EntityRepository
 {
     public function findAllQueryBuilder($filter = '') {
-        return $this->createQueryBuilder('event')
-                    ->orderBy('event.date', 'DESC');
+        $qb = $this->createQueryBuilder('event');
+
+        if($filter) {
+            $qb->andWhere('event.game = :filter')
+                ->setParameter('filter', $filter);
+        }
+
+        return $qb->orderBy('event.date', 'DESC');
     }
 }
