@@ -26,7 +26,7 @@ class ChallengeControllerTest extends ApiTestCase
 
         // Create challlenge response
         $response = $this->client
-        ->post('/thegame/web/app_test.php/api/games/'. $game['id'] .'/challenges/new', [
+        ->post($this->getBaseURI() . '/api/games/'. $game['id'] .'/challenges/new', [
             'body' => json_encode($data),
             'headers' => $this->getAuthorizedHeaders('joe')
         ]);
@@ -57,7 +57,7 @@ class ChallengeControllerTest extends ApiTestCase
 
         // Create challlenge response
         $response = $this->client
-        ->post('/thegame/web/app_test.php/api/games/'. $game['id'] .'/challenges/new', [
+        ->post($this->getBaseURI() . '/api/games/'. $game['id'] .'/challenges/new', [
             'body' => json_encode($data),
             'http_errors' => false,
             'headers' => $this->getAuthorizedHeaders('joe')
@@ -469,7 +469,7 @@ class ChallengeControllerTest extends ApiTestCase
 
         // Create challlenge response
         $response = $this->client
-        ->post('/thegame/web/app_test.php/api/games/'. $gameId .'/challenges/new', 
+        ->post($this->getBaseURI() . '/api/games/'. $gameId .'/challenges/new', 
             [
             'body' => json_encode($data),
             'headers' => $this->getAuthorizedHeaders('joe')

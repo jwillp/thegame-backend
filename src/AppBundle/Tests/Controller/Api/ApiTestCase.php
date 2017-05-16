@@ -100,6 +100,14 @@ abstract class ApiTestCase extends KernelTestCase
         $purger->purge();
     }
 
+
+    protected function getBaseURI() {
+        $uri = '/web/app_test.php';
+        if(!getenv('TRAVIS')) {
+            $uri = '/thegame-backend' . $uri;
+        }
+        return $uri;
+    }
     /**
      * Called when a test fails
      */
@@ -132,7 +140,7 @@ abstract class ApiTestCase extends KernelTestCase
         );
 
         // Create game response
-        $response = $this->client->post('/thegame/web/app_test.php/api/users/register', 
+        $response = $this->client->post($this->getBaseURI() . '/api/users/register', 
             [
             'body' => json_encode($data)
             ]
