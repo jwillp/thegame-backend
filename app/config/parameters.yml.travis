@@ -1,0 +1,13 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: thegame
+    database_user: root
+    database_password: null
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: admin
+    mailer_password: null
+    secret: 138335b2cf1d74af059f0faa11a0f9ca3d261de9
+    jwt_key_pass_phrase: tgapi
