@@ -314,6 +314,9 @@ class ChallengeControllerTest extends ApiTestCase
         // Create game
         $game = $this->createGame();
 
+        // Sleep so events wont have the same datetimes
+        sleep(1);
+        
         // Create challenge
         $challenge = $this->createChallenge($game['id']);
 
