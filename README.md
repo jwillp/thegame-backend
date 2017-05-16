@@ -7,3 +7,19 @@
 
 TheGame Project
 
+
+
+## Build Instructions
+
+```bash
+$ composer install
+
+
+$ mkdir -p var/jwt
+
+# give it a password like tgapi
+$ openssl genrsa -out var/jwt/private.pem -aes256 4096
+
+# give it the same password (tgapi)
+$ openssl rsa -pubout -in var/jwt/private.pem -out var/jwt/public.pem
+```

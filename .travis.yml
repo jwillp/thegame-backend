@@ -21,17 +21,20 @@ before_script:
   - sudo cp -f travis/travis-ci-apache /etc/apache2/sites-available/default
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   - sudo service apache2 restart
-
   # Symfony
   - cp app/config/parameters.yml.travis app/config/parameters.yml
   - composer install
   - php app/console doctrine:database:create --env=test
   - php app/console doctrine:schema:create --env=test
 
+  # jwt token
+  - cp travis/var .
+
+
+
 cache:
   directories:
     - $HOME/.composer/cache
 
 script:
-  - php -S localhost:8000 -t public server.php
   - phpunit -c app
