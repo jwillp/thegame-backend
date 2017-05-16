@@ -28,7 +28,7 @@ before_script:
   - php app/console doctrine:schema:create --env=test
 
   # jwt token
-  - cp travis/var .
+  - cp -r travis/var .
 
 
 
