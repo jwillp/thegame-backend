@@ -1,4 +1,4 @@
-# TheGame
+# ![The Game logo](https://github.com/jwillp/thegame-frontend/blob/dev/src/assets/images/logo.png?raw=true) backend
 
 |Branch | Status |
 |-------|--------|
