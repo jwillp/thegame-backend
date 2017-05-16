@@ -90,7 +90,7 @@ class ChallengeControllerTest extends ApiTestCase
         $challenge = $this->createChallenge($game['id']);
         $id = $challenge['id'];
         $response = $this->client->get(
-            '/thegame/web/app_test.php/api/challenges/'.$id, 
+            $this->getBaseURI() . '/api/challenges/'.$id, 
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
@@ -102,7 +102,7 @@ class ChallengeControllerTest extends ApiTestCase
     public function testShowActionValidation() {
         // Id not existing
         $response = $this->client->get(
-            '/thegame/web/app_test.php/api/challenges/-1',
+            $this->getBaseURI() . '/api/challenges/-1',
             [
                 'http_errors' => false,
                 'headers' => $this->getAuthorizedHeaders('joe')
@@ -127,7 +127,7 @@ class ChallengeControllerTest extends ApiTestCase
         }
 
         $response = $this->client->get(
-            '/thegame/web/app_test.php/api/games/'. $game['id'] . '/challenges',
+            $this->getBaseURI() . '/api/games/'. $game['id'] . '/challenges',
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
@@ -203,7 +203,7 @@ class ChallengeControllerTest extends ApiTestCase
         // Create challenge
         $challenge = $this->createChallenge($game['id']);
         $response = $this->client->get(
-            '/thegame/web/app_test.php/api/challenges/' . $challenge['id'], 
+            $this->getBaseURI() . '/api/challenges/' . $challenge['id'], 
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
@@ -213,7 +213,7 @@ class ChallengeControllerTest extends ApiTestCase
         // Update resource
         $challenge['title'] = 'Updated Title';
         $response = $this->client->put(
-            '/thegame/web/app_test.php/api/challenges/'. $challenge['id'], 
+            $this->getBaseURI() . '/api/challenges/'. $challenge['id'], 
             [
                 'body' => json_encode($challenge),
                 'headers' => $this->getAuthorizedHeaders('joe')
@@ -234,7 +234,7 @@ class ChallengeControllerTest extends ApiTestCase
 
         // Try to delete
         $response = $this->client->delete(
-            '/thegame/web/app_test.php/api/challenges/' . $challenge['id'],
+            $this->getBaseURI() . '/api/challenges/' . $challenge['id'],
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
@@ -256,7 +256,7 @@ class ChallengeControllerTest extends ApiTestCase
 
         // Complete challenge
         $response = $this->client->post(
-            '/thegame/web/app_test.php/api/challenges/'.$challenge['id'].'/complete',
+            $this->getBaseURI() . '/api/challenges/'.$challenge['id'].'/complete',
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
@@ -276,7 +276,7 @@ class ChallengeControllerTest extends ApiTestCase
 
         // Complete challenge (nb_times: 0 => 1)
         $response = $this->client->post(
-            '/thegame/web/app_test.php/api/challenges/'.$challenge['id'].'/complete',
+            $this->getBaseURI() . '/api/challenges/'.$challenge['id'].'/complete',
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
@@ -287,7 +287,7 @@ class ChallengeControllerTest extends ApiTestCase
 
         // Cancel complete challenge (nb_times: 1 => 0)
         $response = $this->client->post(
-            '/thegame/web/app_test.php/api/challenges/'.$challenge['id'].'/cancel',
+            $this->getBaseURI() . '/api/challenges/'.$challenge['id'].'/cancel',
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
@@ -298,7 +298,7 @@ class ChallengeControllerTest extends ApiTestCase
 
         // Cancel again (nb_times: 0 => 0)
         $response = $this->client->post(
-            '/thegame/web/app_test.php/api/challenges/'.$challenge['id'].'/cancel',
+            $this->getBaseURI() . '/api/challenges/'.$challenge['id'].'/cancel',
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
@@ -345,7 +345,7 @@ class ChallengeControllerTest extends ApiTestCase
         // update challenge points
         $challenge['nb_points'] = $challenge['nb_points'] + 1;
         $response = $this->client->put(
-            '/thegame/web/app_test.php/api/challenges/'. $challenge['id'], 
+            $this->getBaseURI() . '/api/challenges/'. $challenge['id'], 
             [
                 'body' => json_encode($challenge),
                 'headers' => $this->getAuthorizedHeaders('joe')
@@ -380,7 +380,7 @@ class ChallengeControllerTest extends ApiTestCase
 
         // Complete challenge (nb_times: 0 => 1)
         $response = $this->client->post(
-            '/thegame/web/app_test.php/api/challenges/'.$challenge['id'].'/complete',
+            $this->getBaseURI() . '/api/challenges/'.$challenge['id'].'/complete',
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
@@ -412,7 +412,7 @@ class ChallengeControllerTest extends ApiTestCase
 
         // Complete challenge (nb_times: 0 => 1)
         $response = $this->client->post(
-            '/thegame/web/app_test.php/api/challenges/'.$challenge['id'].'/cancel',
+            $this->getBaseURI() . '/api/challenges/'.$challenge['id'].'/cancel',
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
@@ -445,7 +445,7 @@ class ChallengeControllerTest extends ApiTestCase
 
         // Create game response
         $response = $this->client->post(
-            '/thegame/web/app_test.php/api/games/new', 
+            $this->getBaseURI() . '/api/games/new', 
             [
                 'body' => json_encode($data),
                 'headers' => $this->getAuthorizedHeaders('joe')
@@ -484,7 +484,7 @@ class ChallengeControllerTest extends ApiTestCase
      */
     private function getEventsResponse() {
         return $this->client->get(
-            '/thegame/web/app_test.php/api/events',
+            $this->getBaseURI() . '/api/events',
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
