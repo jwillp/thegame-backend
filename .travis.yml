@@ -10,4 +10,4 @@ before_script:
 
 
 script:
-  - app/phpunit -c app
+  - phpunit -c app
