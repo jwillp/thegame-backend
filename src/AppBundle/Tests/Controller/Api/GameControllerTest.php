@@ -130,7 +130,7 @@ class GameControllerTest extends ApiTestCase
         $finishedData = json_decode($response->getBody(true), true);
         $id = $finishedData['id'];
         $response = $this->client->get(
-            '/thegame/web/app_test.php/api/games/' . $id,
+            $this->getBaseURI() . '/api/games/' . $id,
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
@@ -306,7 +306,7 @@ class GameControllerTest extends ApiTestCase
 
         // Try to delete
         $response = $this->client->delete(
-            '/thegame/web/app_test.php/api/games/' . $id,
+            $this->getBaseURI() . '/api/games/' . $id,
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
@@ -316,7 +316,7 @@ class GameControllerTest extends ApiTestCase
 
         // Verify deleted flag
         $response = $this->client->get(
-            '/thegame/web/app_test.php/api/games/' . $id,
+            $this->getBaseURI() . '/api/games/' . $id,
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
@@ -345,7 +345,7 @@ class GameControllerTest extends ApiTestCase
      */
     private function getEventsResponse() {
         return $this->client->get(
-            '/thegame/web/app_test.php/api/events',
+            $this->getBaseURI() . '/api/events',
             [
                 'headers' => $this->getAuthorizedHeaders('joe')
             ]
