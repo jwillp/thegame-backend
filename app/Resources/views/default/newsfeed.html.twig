@@ -1,0 +1,216 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+  Newsfeed - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+
+
+<div class="well">
+  <h1 class="text-center"><img src="{{ asset('img/newsfeed.png') }}" width="400px" alt="Newsfeed"></h1>
+  <h2 class="text-center">Newsfeed</h2>
+  <div id="newsFeed"></div>
+</div>
+
+
+{% endblock %}
+
+
+{% block react %}
+  {% include 'react_components/lite.js' %}
+  {% include 'react_components/modals.js' %}
+  {% include 'react_components/charts.js' %}
+  {% include 'react_components/forms.js' %}
+
+
+// Controller. responsible for making communication with the server
+// and updating the views accordingly. It is the bridge between server model/logic
+// and the views
+var Controller = Lite.EventController({
+
+    fetchDelay : 5000,
+    onEvent: {
+        // Called when the news feed View is Ready to be updated
+        onNewsFeedReadyEvent: function() {
+            var self = this.self;
+            self.fetchNews();
+            setInterval(self.fetchNews.bind(self), self.fetchDelay);
+        },
+    },
+
+    // Get news from the server and call update on views
+    // with the data received
+    fetchNews : function() {
+        $.ajax({
+            url: "{{ path('api_notifications')}}",
+            type: 'GET',
+            dataType: 'json',
+            data: {range: 'all'},
+        })
+        .done(function(data) {
+            Lite.EventManager.fireEvent('UpdateNewsFeedEvent', data.notifications);
+        })
+        .fail(function(data) {
+            console.log("error", data);
+        })
+    },
+
+});
+Controller.registerToSource(Lite.EventManager);
+
+
+var LoadingIcon = React.createClass({
+
+    render: function() {
+        return (
+            <div>
+                <button className="btn btn-lg btn-warning">
+                    <i className="fa fa-circle-o-notch fa-spin fa-fw"></i>
+                    Loading...
+              </button>
+            </div>
+        );
+    }
+});
+
+
+var NewsView = Lite.createClass({
+
+
+
+    render: function() {
+        var post = this.props.post;
+        var url = '{{ path("view_challenge", {'challengeId': 'challengeId'}) }}';
+        post.challenge.url = url.replace("challengeId", post.challenge.id);
+
+        if (post.type == 'NP_USER_CREATED_CHALLENGE')
+            return this.renderChallengeCreated();
+        if (post.type == 'NP_USER_COMPLETED_CHALLENGE')
+            return this.renderChallengeCompleted();
+        if (post.type == 'NP_USER_CANCELED_CHALLENGE_SCORE')
+            return this.renderChallengeCanceled();
+
+        return (<div>{post.type}</div>)
+    },
+
+    renderChallengeCreated: function() {
+        var post = this.props.post;
+        return (
+            <div className="news container-fluid">
+                <div className="row">
+                    <div className="col-md-10 news-message">
+                        <span className="news-username">{post.user.username}</span> created challenge <a href={post.challenge.url} className="text-info">{post.challenge.title}</a> worth {post.challenge.nbPoints} pts
+                    </div>
+                    <div className="col-md-2 news-icon news-blue">
+                        <div className="center-xy">
+                            <i className="fa fa-plus" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    },
+
+    renderChallengeCompleted: function() {
+        var post = this.props.post;
+        return (
+            <div className="news container-fluid">
+                <div className="row">
+                    <div className="col-md-10 news-message">
+                        <span className="news-username">{post.user.username}</span> completed <a href={post.challenge.url} className="text-info">{post.challenge.title}</a> for the {post.nbTimesAfter} time
+                    </div>
+                    <div className="col-md-2 news-icon news-green">
+                        <div className="center-xy">
+                            <i className="fa fa-plus" aria-hidden="true"></i> {post.challenge.nbPoints}pts
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    },
+
+    renderChallengeCanceled: function() {
+        var post = this.props.post;
+        return (
+            <div className="news container-fluid">
+                <div className="row">
+                    <div className="col-md-10 news-message">
+                        <span className="news-username">{post.user.username}</span> canceled the achievement of <a href={post.challenge.url} className="text-info">{post.challenge.title}</a>
+                    </div>
+                    <div className="col-md-2 news-icon news-red">
+                        <div className="center-xy">
+                            <i className="fa fa-minus" aria-hidden="true"></i> {post.challenge.nbPoints}pts
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    },
+
+});
+
+var NewsList = Lite.createClass({
+
+    getInitialState: function() {
+        return {
+            notifications: undefined
+        }
+    },
+
+    onComponentMounted: function() {
+        Lite.EventManager.fireEvent('NewsFeedReadyEvent');
+    },
+
+    onEvent: {
+        // Controller requested an Update
+        onUpdateNewsFeedEvent: function(emitter, notifications) {
+            this.self.setState({notifications: notifications});
+        },
+    },
+
+    render: function() {
+
+        // When not ready
+        if (this.state.notifications == undefined) {
+            return (
+                <div>
+                    <h3>Loading news feed...</h3>
+                    <LoadingIcon />
+                </div>
+            );
+        }
+        // When empty notification list
+        if (this.state.notifications.length == 0){
+            return (
+                <div>
+                   Nothing interresting ..
+                </div>
+            );
+        }
+
+        var notifNodes = this.state.notifications.map(function(notif) {
+            return (
+                <NewsView post={notif}
+                          key={notif.id}
+                             />
+            );
+        });
+
+        return (
+            <div id="newsList">
+                {notifNodes}
+            </div>
+        );
+    }
+});
+
+
+
+ReactDOM.render(
+    <NewsList />,
+    document.getElementById('newsFeed')
+);
+
+
+
+{% endblock %}

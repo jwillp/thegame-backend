@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Game list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Startdate</th>
+                <th>Enddate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for game in games %}
+            <tr>
+                <td><a href="{{ path('game_show', { 'id': game.id }) }}">{{ game.id }}</a></td>
+                <td>{{ game.title }}</td>
+                <td>{{ game.description }}</td>
+                <td>{% if game.startDate %}{{ game.startDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if game.endDate %}{{ game.endDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('game_show', { 'id': game.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('game_edit', { 'id': game.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('game_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

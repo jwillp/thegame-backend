@@ -1,0 +1,12 @@
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+app_api:
+    resource: "@AppBundle/Controller/Api/"
+    type:     annotation
+    defaults:
+        _format: json
+        
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

@@ -1,0 +1,31 @@
+API_ROUTES
+
+GET /games                            : List all games
+GET /games/{id}                       : Returns info of a game
+GET /games/{game_id}/challenges       : Returns the challenges of a certain game
+GET /challenges/                      : List all challenges of all games
+GET /challenges/{challenge_id}        : Returns all the infos along with the scores of a certain challenge
+
+POST /games                           : Creates a game
+POST /games/{game_id}/challenges      : Creates a challenge
+
+PUT /games/{id}                       : Edit a certain game
+PUT /challenges/{challenge_id}        : Edit a certain challenge
+
+
+DELETE /games/{id}                       : Deletes a certain game
+DELETE /challenges/{challenge_id}        : Deletes a certain challenge
+
+POST /challenges/{challenge_id}/complete : Completes a certain challenge one time
+POST /challenges/{challenge_id}/cancel   : Cancels the success of a certain challenge one time
+
+
+
+
+System User
+Username: SYSTEM
+Email: system@thegame.com
+Enabled: 1
+salt: 977yo8e5pfk008csss84gss0wsg0ss0
+password: $2y$13$977yo8e5pfk008csss84gepqUxc9MvNbxpwo8pGL0d/V11ZNVyINa
+roles: a:0:{}

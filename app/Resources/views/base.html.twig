@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}TheList{% endblock %}</title>
+    {% block stylesheets %}
+    {# Slate theme for bootstrap #}
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/slate/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css">
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+    {% endblock %}
+
+    {% block header_javascript %}
+        {# jQuery #}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        {#  Latest compiled and minified JavaScript  #}
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        {# Chart.js #}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.3/Chart.min.js"></script>
+        {# Bootbox.js #}
+        <script src="https://github.com/makeusabrew/bootbox/releases/download/v4.4.0/bootbox.min.js"></script>
+        {# React.js #}
+        <script src="https://fb.me/react-with-addons-15.0.2.js"></script>
+        <script src="https://fb.me/react-dom-15.0.2.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    {% endblock %}
+</head>
+<body>
+    {% block body %}
+        {% block header %}
+        <nav class="navbar navbar-default navbar-static-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="{{ path('homepage') }}">TheList</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="{{ path('homepage') }}">Home</a></li>
+                <li><a href="{{ path('leaderboard') }}">Leaderboard</a></li>
+                <li><a href="{{ path('challenge_list') }}">Challenges</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                {% if app.user.username is defined %}
+                <li><a href="{{ app.user.username }}">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    {{ app.user.username|capitalize }}
+                  </a>
+                </li>
+                <li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
+                {% else %}
+                <li><a href="{{ path('fos_user_security_login') }}">Login</a></li>
+                <li><a href="{{ path('fos_user_registration_register') }}">Register</a></li>
+                {% endif %}
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div>
+        </nav>
+        {% endblock %}
+        <div id="main-container" class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    {% endblock %}
+
+    {% block script_includes %}
+    {% endblock %}
+
+    <script type="text/babel">
+      {% block react %}
+
+      {% endblock %}
+    </script>
+
+    <script type="text/javascript">
+      $(document).ready(function(){
+      {% block javascript %}
+
+      {% endblock %}
+      });
+    </script>
+
+</body>
+</html>

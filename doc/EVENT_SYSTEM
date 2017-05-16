@@ -1,0 +1,21 @@
+Agent + Action + Target
+
+User(id) + Created + Challenge(id)            --> iid = USER_CREATED_CHALLENGE
+User(id) + Deleted + Challenge(id)            --> iid = USER_DELETED_CHALLENGE
+User(id) + Updated + Challenge(id)            --> iid = USER_UPDATED_CHALLENGE   
+User(id) + Completed + Challenge(id)          --> iid = USER_COMPLETED_CHALLENGE
+User(id) + Canceled Score for + Challenge(id) --> iid = USER_CANCELED_CHALLENGE
+User(id) + Took_Lead + Null                   --> iid = USER_TOOK_LEAD
+
+User(id) + Created + Game(id)                 --> iid = USER_CREATED_GAME   
+User(id) + Deleted + Game(id)                 --> iid = USER_DELETED_GAME   
+User(id) + Won + Game(id)                     --> iid = USER_WON_GAME
+
+User(id) + Unlocked + Achievement             --> iid = USER_UNLOCKED_CHALLENGE
+
+Event {
+    Agent : EventParticipant
+    Action : String
+    Target : EventParticipant
+    iid: String
+}
