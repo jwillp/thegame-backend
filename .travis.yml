@@ -8,6 +8,10 @@ before_script:
   - php app/console doctrine:database:create --env=test
   - php app/console doctrine:schema:create --env=test
 
+cache:
+  directories:
+    - $HOME/.composer/cache
 
 script:
+  - php -S localhost:8000 -t public server.php
   - phpunit -c app
