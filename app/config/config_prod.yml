@@ -32,7 +32,7 @@ monolog:
         swift:
             type:       swift_mailer
             from_email: 'error@thegame.com'
-            to_email:   'error@thegame.com'
+            to_email:   'willyjames.music@gmail.com'
             subject:    'An Error Occurred! %%message%%'
             level:      debug
             formatter:  monolog.formatter.html
