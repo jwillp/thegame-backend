@@ -7,7 +7,7 @@
 
 TheGame Project
 
-
+Frontend project: https://github.com/jwillp/thegame-frontend
 
 ## Build Instructions
 
