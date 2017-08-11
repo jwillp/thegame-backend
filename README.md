@@ -7,13 +7,13 @@
 
 TheGame Project
 
+For more info on the project see the frontend repository
 Frontend project: https://github.com/jwillp/thegame-frontend
 
 ## Build Instructions
 
 ```bash
 $ composer install
-
 
 $ mkdir -p var/jwt
 
