@@ -1,6 +1,6 @@
 <?php
     // Default values:
-    $logFile = __DIR__.'/path-to-folder/logs/dev.log';
+    $logFile = __DIR__.'/app/logs/dev.log';
     $maxLines = 100;
 ?>
 <!DOCTYPE html>
