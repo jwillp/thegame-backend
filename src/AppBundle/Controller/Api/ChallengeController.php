@@ -160,7 +160,7 @@ class ChallengeController extends ApiController
      * @Route("/challenges/{id}/complete", name="api_challenges_complete")
      * @Method("POST")
      */
-    public function completeChallengection(Request $request, Challenge $challenge) {
+    public function completeChallengeAction(Request $request, Challenge $challenge) {
         if($challenge->isDeleted()) {
             throw new Exception("Resource not found", 404);
         }
@@ -247,7 +247,7 @@ class ChallengeController extends ApiController
      * @Route("/challenges/{id}/cancel", name="api_challenges_cancel")
      * @Method("POST")
      */
-    public function cancelScoreChallengection(Request $request, Challenge $challenge) {
+    public function cancelScoreChallengeAction(Request $request, Challenge $challenge) {
 
         if($challenge->isDeleted()) {
             throw new Exception("Resource not found", 404);
