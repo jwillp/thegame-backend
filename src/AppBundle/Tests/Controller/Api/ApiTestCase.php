@@ -100,7 +100,9 @@ abstract class ApiTestCase extends KernelTestCase
         $purger->purge();
     }
 
-
+    /**
+     * Returns the base URI of the backend
+     */
     protected function getBaseURI() {
         $uri = '/web/app_test.php';
         if(getenv('TRAVIS') != 'true') {
@@ -122,6 +124,9 @@ abstract class ApiTestCase extends KernelTestCase
         throw $e;
     }
 
+    /**
+     * Returns an authorized header for a certain username
+     */
     protected function getAuthorizedHeaders($username, $headers = array()) {
         $token = $this->getService('lexik_jwt_authentication.encoder')
                       ->encode(['username' => $username]);
@@ -130,7 +135,7 @@ abstract class ApiTestCase extends KernelTestCase
     }
 
     /**
-     * Creates a user
+     * Creates a user in database
      */
     public function createUser($username, $password = 'password') {
         $data = array(

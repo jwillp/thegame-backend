@@ -17,7 +17,7 @@ abstract class ApiController extends Controller
     
     protected function processForm(Request $request, FormInterface $form) {
         //$data = json_decode($request->getContent(), true);
-        $data =  $this->deserialize($request->getContent(), 'json');
+        $data =  $this->deserialize($request->getContent());
 
         $clearMissing = $request->getMethod() != 'PATCH';
         $form->submit($data, $clearMissing);
@@ -47,7 +47,7 @@ abstract class ApiController extends Controller
     }
 
     /**
-     * Deserialize JSON
+     * Deserializes JSON
      */
     protected function deserialize($data) {
         $data = json_decode($data);
@@ -118,7 +118,7 @@ abstract class ApiController extends Controller
     }
 
     /**
-     * Changes snake_keys to camelCase of an multidimensional array 
+     * Changes camelCase to snake_keys of an multidimensional array 
      */
     protected function snakizeCamelArrayKeys($apiResponseArray)
     {
@@ -134,7 +134,10 @@ abstract class ApiController extends Controller
       return $arr;
     }
 
-    private function snakizeCamel($input) {
+    /**
+     * Converts a string from camelCase to snake_case
+     */
+    protected function snakizeCamel($input) {
         if(!$input) return $input;
         preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $input, $matches);
         $ret = $matches[0];

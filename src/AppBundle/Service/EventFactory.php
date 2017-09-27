@@ -9,6 +9,7 @@ use AppBundle\Entity\EventParticipant;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Challenge;
 use AppBundle\Entity\Game;
+use AppBundle\Entity\ChallengeBatch;
 
 /**
 * Event Service
@@ -25,6 +26,9 @@ class EventFactory
         $this->em = $entityManager;
     }
 
+    /**
+     * Creates an Event representing the creation of a new challenge
+     */
     public function createNewChallengeEvent(User $creator, Challenge $challenge) {
         return $this->createEvent(
             $creator, 
@@ -37,6 +41,9 @@ class EventFactory
         );
     }
 
+    /**
+     * Creates an Event representing the update of a challenge's points
+     */
     public function createChallengePointsUpdatedEvent(User $updater, Challenge $challenge) {
         return $this->createEvent(
             $updater, 
@@ -49,6 +56,9 @@ class EventFactory
         );
     }
 
+    /**
+     * Creates an Event representing the completion of a challenge
+     */
     public function createUserCompletedChallengeEvent(User $updater, Challenge $challenge) {
         return $this->createEvent(
             $updater, 
@@ -61,6 +71,9 @@ class EventFactory
         );
     }
 
+    /**
+     * Creates an Event representing the cancelation of a challenge
+     */
     public function createUserCanceledChallengeEvent(User $updater, Challenge $challenge) {
         return $this->createEvent(
             $updater, 
@@ -73,6 +86,9 @@ class EventFactory
         );
     }
 
+    /**
+     * Creates an Event representing the creation of a new game
+     */
     public function createNewGameEvent(User $creator, Game $game) {
         return $this->createEvent(
             $creator, 
@@ -82,6 +98,19 @@ class EventFactory
             'GAME',
             'USER_CREATED_GAME_EVENT',
             $game
+        );
+    }
+
+
+    public function createNewBatchCompletionEvent(User $user, ChallengeBatch $batch) {
+        return $this->createEvent(
+            $user, 
+            'USER' ,
+            "{agent} completed a batch of challenges {target}",
+            $batch,
+            'CHALLENGE_BATCH',
+            'USER_COMPLETED_BATCH_CHALLENGES_EVENT',
+            $batch->getGame()
         );
     }
 

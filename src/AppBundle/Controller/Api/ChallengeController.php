@@ -17,6 +17,8 @@ use AppBundle\Entity\Score;
 use AppBundle\Entity\Challenge;
 use AppBundle\Form\ChallengeType;
 
+use AppBundle\Entity\ChallengeBatch;
+
 
 use AppBundle\Pagination\PaginatedCollection;
 use AppBundle\Pagination\PaginationFactory;
@@ -166,7 +168,6 @@ class ChallengeController extends ApiController
         // Is there a score for the current user ?
         // if not we will create one before incrementing it
         $em = $this->getDoctrine()->getManager();
-        $userRepo = $em->getRepository('AppBundle:User');
         $user = $this->getUser();
 
         $score = $this->getScoreForUser($user, $challenge);
@@ -190,6 +191,57 @@ class ChallengeController extends ApiController
     }
 
     /**
+     * Completes challenges in batch
+     *
+     * @Route("/challenges/complete", name="api_challenges_complete_batch")
+     * @Method("POST")
+     */
+    public function completeBatchChallengeAction(Request $request) {
+        $data =  $this->deserialize($request->getContent());
+
+        $em = $this->getDoctrine()->getManager();
+        $challengeRepo = $em->getRepository('AppBundle:Challenge');
+        $user = $this->getUser();
+
+        $batch = new ChallengeBatch();
+        $batch->setUser($user);
+
+        foreach ($data['ids'] as $challengeId) {
+            $challenge = $challengeRepo->findOneById($challengeId);
+
+            if (!$challenge) {
+                // TODO cumul invalid id
+            }
+
+            // Get score of user for challenge
+            $score = $this->getScoreForUser($user, $challenge);
+
+            // Increment score
+            $score->increment();
+
+            $em->persist($score);
+            $em->persist($challenge);
+
+            $batch->setGame($challenge->getGame());
+            $batch->addChallenge($challenge);
+        }
+
+        $em->persist($batch);
+        $em->flush();
+                
+        // Create Event
+        $event = $this->get('event_factory')->createNewBatchCompletionEvent(
+                        $this->getUser(), 
+                        $batch
+        );
+        $em->persist($event);
+
+        $em->flush();
+
+        return $this->createApiResponse($batch, 200);
+    }
+
+    /**
      * Cancel the success of a challenge for a certain user
      *
      * @Route("/challenges/{id}/cancel", name="api_challenges_cancel")
@@ -204,7 +256,6 @@ class ChallengeController extends ApiController
         // Is there a score for the current user ?
         // if not we will create one before incrementing it
         $em = $this->getDoctrine()->getManager();
-        $userRepo = $em->getRepository('AppBundle:User');
         $user = $this->getUser();
 
         $score = $this->getScoreForUser($user, $challenge);
@@ -253,7 +304,6 @@ class ChallengeController extends ApiController
 
         return $this->createApiResponse($challenge, 200);
     }
-
 
     /**
      * Returns the score for a user. 

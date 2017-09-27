@@ -389,6 +389,8 @@ class ChallengeControllerTest extends ApiTestCase
             ]
         );
 
+        // TODO test score is not 0
+
         $response = $this->getEventsResponse();
         $this->assertResponsePropertyEquals(
             $response, 
@@ -434,7 +436,76 @@ class ChallengeControllerTest extends ApiTestCase
         );
     }
 
+    // test_method testCompleteBatchChallengeAction "src/AppBundle/Tests/Controller/Api/ChallengeControllerTest"
+    public function testCompleteBatchChallengeAction() {
+        // Create Game
+        $game = $this->createGame();
 
+        // Create loads of challenges
+        for ($i=0; $i < 25; $i++) { 
+            $challenge = $this->createChallenge(
+                $game['id'], 
+                'Challenge #' . $i
+            );
+        }
+
+        // List challenges to get some ids for the batch
+        $response = $this->client->get(
+            $this->getBaseURI() . '/api/games/'. $game['id'] . '/challenges',
+            [
+                'headers' => $this->getAuthorizedHeaders('joe')
+            ]
+        );
+        $finishedData = json_decode($response->getBody(true), true);
+        $this->assertEquals(200, $response->getStatusCode());
+
+        // Sleep so events wont have the same datetimes
+        sleep(1);
+        
+
+        $ids = array();
+        foreach ($finishedData['items'] as $challenge) {
+            $ids[] = $challenge['id'];
+        }
+
+
+        $data = array(
+            'ids' => $ids
+        );
+
+        // Complete challenge (nb_times: 0 => 1)
+        $response = $this->client->post(
+            $this->getBaseURI() . '/api/challenges/complete',
+            [
+                'body' => json_encode($data),
+                'headers' => $this->getAuthorizedHeaders('joe')
+            ]
+        );
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $batchData = json_decode($response->getBody(true), true);
+
+        $this->debugResponse($response);
+
+        // TODO test score is not 0
+
+        // Test Event
+
+        $response = $this->getEventsResponse();
+        $this->assertResponsePropertyEquals(
+            $response, 
+            'items[0].iid', 
+            'USER_COMPLETED_BATCH_CHALLENGES_EVENT'
+        );
+        $this->assertResponsePropertyEquals(
+            $response, 
+            'items[0].target.type', 
+            'CHALLENGE_BATCH'
+        );
+
+    }
+
+    // UTIL FUNCTIONS //
     /**
      * Creates a test game
      */

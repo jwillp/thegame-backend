@@ -63,7 +63,11 @@ class EventController extends ApiController
 
 
     private function getObjectForParticipant($eventParticipant, $entityManager)  {
-        $participantClass = ucfirst(strtolower($eventParticipant->getType()));
+        // UPPER SNAKE CASE TO CAMEL CASE
+        $type = strtolower($eventParticipant->getType());
+        $participantClass = ucfirst(lcfirst(implode('', array_map('ucfirst', explode('_', $type)))));
+
+
 
         $object = $entityManager->getRepository('AppBundle:'. $participantClass)
                      ->findOneById($eventParticipant->getObjectId());
